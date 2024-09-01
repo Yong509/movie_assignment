@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/constants/movie_list_type_enum.dart';
+import 'package:movie_assignment/data_models/movie/genre/genre.dart';
+import 'package:movie_assignment/data_models/movie/movie.dart';
 import 'package:movie_assignment/data_models/movie/movie_query_params.dart';
 import 'package:movie_assignment/services/movie_service.dart';
 
@@ -12,7 +14,6 @@ class NowShowingStrategy implements MovieListStrategy {
   void switchMovieListType(MovieListProvider provider) {
     provider._currentMovieList = provider._nowShowingMovieList;
     provider._currentMoviePage = provider._currentNowShowingPage;
-    provider.fetchMovies(provider.currentType);
   }
 }
 
@@ -21,7 +22,6 @@ class PopularStrategy implements MovieListStrategy {
   void switchMovieListType(MovieListProvider provider) {
     provider._currentMovieList = provider._popularMovieList;
     provider._currentMoviePage = provider._currentPopularPage;
-    provider.fetchMovies(provider.currentType);
   }
 }
 
@@ -37,17 +37,17 @@ class MovieListProvider extends ChangeNotifier {
   MovieListTypeEnum _currentType = MovieListTypeEnum.nowShowing;
   MovieListTypeEnum get currentType => _currentType;
 
-  List _movieGenreList = [];
-  List get movieGenreList => _movieGenreList;
+  List<Genre> _movieGenreList = [];
+  List<Genre> get movieGenreList => _movieGenreList;
 
-  final List _nowShowingMovieList = [];
-  List get nowShowingMovieList => _nowShowingMovieList;
+  final List<Movie> _nowShowingMovieList = [];
+  List<Movie> get nowShowingMovieList => _nowShowingMovieList;
 
-  final List _popularMovieList = [];
-  List get popularMovieList => _popularMovieList;
+  final List<Movie> _popularMovieList = [];
+  List<Movie> get popularMovieList => _popularMovieList;
 
-  List _currentMovieList = [];
-  List get currentMovieList => _currentMovieList;
+  List<Movie> _currentMovieList = [];
+  List<Movie> get currentMovieList => _currentMovieList;
 
   int _currentMoviePage = 0;
   final int _currentNowShowingPage = 1;
@@ -60,13 +60,11 @@ class MovieListProvider extends ChangeNotifier {
       queryParams: MovieListQueryParams(page: _currentMoviePage),
       type: _currentType,
     );
-
     if (response == null) return;
 
     _currentMovieList.addAll(response.results);
     _currentMovieList = _currentMovieList.toSet().toList();
     _currentMoviePage++;
-
     notifyListeners();
   }
 

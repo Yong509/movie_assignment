@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/constants/movie_list_type_enum.dart';
 import 'package:movie_assignment/providers/movie_list_provider.dart';
-import 'package:movie_assignment/widgets/movie_list_tile.dart';
+import 'package:movie_assignment/widgets/movie/movie_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class MovieListPage extends StatefulWidget {
@@ -13,12 +13,10 @@ class MovieListPage extends StatefulWidget {
 
 class _MovieListPageState extends State<MovieListPage> {
   final scrollController = ScrollController();
-  late MovieListProvider movieListProvider;
 
   @override
   void initState() {
     super.initState();
-    movieListProvider = context.read<MovieListProvider>();
     scrollController.addListener(fetchMoreMovie);
   }
 
@@ -50,9 +48,7 @@ class _MovieListPageState extends State<MovieListPage> {
         ],
       ),
       body: FutureBuilder(
-        future: context.read<MovieListProvider>().fetchMovies(
-              MovieListTypeEnum.nowShowing,
-            ),
+        future: context.read<MovieListProvider>().fetchMovies(context.read<MovieListProvider>().currentType),
         builder: (context, snapshot) {
           return Consumer<MovieListProvider>(
             builder: (context, movieListProvider, child) {

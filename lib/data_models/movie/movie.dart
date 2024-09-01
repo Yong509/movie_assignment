@@ -8,7 +8,7 @@ class Movie extends Equatable {
   @JsonKey(name: "adult")
   final bool adult;
   @JsonKey(name: "backdrop_path")
-  final String backdropPath;
+  final String? backdropPath;
   @JsonKey(name: "genre_ids")
   final List<int> genreIds;
   @JsonKey(name: "id")

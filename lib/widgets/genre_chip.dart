@@ -11,7 +11,10 @@ class GenreChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<MovieListProvider>(
       builder: (context, movieListProvider, child) {
-        final genre = movieListProvider.movieGenreList?.firstWhere((item) => genreId == item.id);
+        final genre = movieListProvider.movieGenreList.firstWhere(
+          (item) => genreId == item.id,
+        );
+
         if (genre != null) {
           return Container(
             key: ValueKey(genre.id),

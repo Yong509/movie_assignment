@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:movie_assignment/constants/movie_list_type_enum.dart';
 import 'package:movie_assignment/constants/movie_urls.dart';
 import 'package:movie_assignment/data_models/movie/genre/genre.dart';
 import 'package:movie_assignment/data_models/movie/genre/genre_query_params.dart';
@@ -16,10 +17,21 @@ class MovieService {
   static const moviePath = '/3/movie';
   static const genrePath = '/3/genre';
 
-  Future<MovieListResponse?> fetchShowingMovieList({MovieListQueryParams? queryParams}) async {
-    final url = Uri.https(
+  Future<MovieListResponse?> fetchShowingMovieList({
+    MovieListQueryParams? queryParams,
+    required MovieListTypeEnum type,
+  }) async {
+    final String movieListPath;
+    switch (type) {
+      case MovieListTypeEnum.nowShowing:
+        movieListPath = MovieUrls.movieShowingListUrl(moviePath);
+      case MovieListTypeEnum.popular:
+        movieListPath = MovieUrls.moviePopularListUrl(moviePath);
+    }
+
+    Uri url = Uri.https(
       Env.baseUrl,
-      MovieUrls.movileShowingListUrl(moviePath),
+      movieListPath,
       queryParams?.toJson(),
     );
 
@@ -27,6 +39,7 @@ class MovieService {
       url,
       HttpClientService.commonHeader,
     );
+
     return response.statusCode == 200 ? MovieListResponse.fromJson(json.decode(response.body)) : null;
   }
 

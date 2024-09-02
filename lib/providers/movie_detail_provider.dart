@@ -8,7 +8,6 @@ class MovieDetailProvider extends ChangeNotifier {
   MovieDetailProvider(this._movieService, this._currentMovie) {
     _currentMovie = _currentMovie;
     fetchMovieDetail();
-    fetchCast();
   }
 
   Movie _currentMovie;
@@ -25,6 +24,7 @@ class MovieDetailProvider extends ChangeNotifier {
 
     if (response == null) return;
     _movieDetail = response;
+    await fetchCast();
     notifyListeners();
   }
 
@@ -34,7 +34,7 @@ class MovieDetailProvider extends ChangeNotifier {
 
     if (response.id == _currentMovie.id) {
       _movieCast = response.cast;
-      print(movieCast);
     }
+    notifyListeners();
   }
 }

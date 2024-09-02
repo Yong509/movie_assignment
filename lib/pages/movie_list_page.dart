@@ -77,9 +77,11 @@ class _MovieListPageState extends State<MovieListPage> {
                 }
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               } else {
-                return const SizedBox();
+                return const Center(
+                  child: Text("No movie list found"),
+                );
               }
             },
           );

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 class RatingStars extends StatelessWidget {
-  const RatingStars({super.key, required this.rating});
+  const RatingStars({
+    super.key,
+    required this.rating,
+    this.size = 13,
+  });
 
   final double rating;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +22,24 @@ class RatingStars extends StatelessWidget {
       children: [
         ...List.generate(
           fullStars,
-          (index) => const Icon(
+          (index) => Icon(
             Icons.star,
             color: Colors.amber,
-            size: 13,
+            size: size,
           ),
         ),
         if (hasHalfStar)
-          const Icon(
+          Icon(
             Icons.star_half,
             color: Colors.amber,
-            size: 13,
+            size: size,
           ),
         ...List.generate(
           emptyStars,
-          (index) => const Icon(
+          (index) => Icon(
             Icons.star_border,
             color: Colors.amber,
-            size: 13,
+            size: size,
           ),
         ),
       ],

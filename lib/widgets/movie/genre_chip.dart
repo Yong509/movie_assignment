@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/providers/movie_list_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,7 @@ class GenreChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<MovieListProvider>(
       builder: (context, movieListProvider, child) {
-        final genre = movieListProvider.movieGenreList.firstWhere(
+        final genre = movieListProvider.movieGenreList.firstWhereOrNull(
           (item) => genreId == item.id,
         );
 

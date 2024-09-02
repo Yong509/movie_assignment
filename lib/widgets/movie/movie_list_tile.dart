@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:movie_assignment/data_models/movie/movie.dart';
-import 'package:movie_assignment/env.dart';
 import 'package:movie_assignment/pages/movie_detail_page.dart';
 import 'package:movie_assignment/providers/movie_detail_provider.dart';
 import 'package:movie_assignment/services/movie_service.dart';
+import 'package:movie_assignment/utils/image_path_url.dart';
 import 'package:movie_assignment/widgets/movie/genre_chip.dart';
 import 'package:movie_assignment/widgets/rating_stars.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +14,6 @@ class MovieListTile extends StatelessWidget {
   const MovieListTile({super.key, required this.movie});
 
   final Movie movie;
-
-  String imagePath(String path) {
-    return '${Env.imageBaseUrl}/$path';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +57,7 @@ class MovieListTile extends StatelessWidget {
                 blendMode: BlendMode.dstIn,
                 child: CachedNetworkImage(
                   cacheKey: movie.posterPath,
-                  imageUrl: imagePath(
+                  imageUrl: imagePathUrl(
                     movie.posterPath,
                   ),
                   imageBuilder: (context, imageProvider) {

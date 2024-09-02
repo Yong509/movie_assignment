@@ -29,7 +29,7 @@ Working with REST API has to deal with JSON to visualize the responses. Json ser
 The Movie DB requires the API Key or Access token to request the API.  Which needs to secure these sensitive informations.  The envied is more type safety than env because we need to define them within a Dart class and annotate them.
 
 4. cached_network_image
-cached_network_image is used to efficiently load and cache images from the internet. Because network images are everywhere in this app. Improving the display image. 
+cached_network_image is used to efficiently load and cache images from the internet. Because network images are everywhere in this app. Improving the display network image. 
 
 
 Before run and debug the project please run the code generator to generate the missing .g.dart generated dart files first.

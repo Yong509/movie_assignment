@@ -32,8 +32,11 @@ The Movie DB requires the API Key or Access token to request the API.  Which ne
 cached_network_image is used to efficiently load and cache images from the internet. Because network images are everywhere in this app. Improving the display network image. 
 
 
-# Before run and debug the project please run the code generator to generate the missing .g.dart generated dart files first.
+## Before run and debug the project 
+1. Add .env file 
+2. please run the code generator to generate the missing .g.dart generated dart files first.
 
 ```
+flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
 ```

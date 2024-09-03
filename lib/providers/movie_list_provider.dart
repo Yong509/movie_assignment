@@ -64,8 +64,6 @@ class MovieListProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> fetchMovies(MovieListTypeEnum type) async {
-    if (_isLoading) return;
-
     _isLoading = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notifyListeners();

@@ -39,7 +39,7 @@ class _MovieListPageState extends State<MovieListPage> {
           Consumer<MovieListProvider>(
             builder: (context, movieListProvider, child) {
               return TextButton(
-                onPressed: () => movieListProvider.switchMovieListType(),
+                onPressed: movieListProvider.isLoading ? null : () => movieListProvider.switchMovieListType(),
                 child: Text(
                   movieListProvider.currentType.value,
                 ),

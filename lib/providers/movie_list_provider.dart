@@ -53,18 +53,29 @@ class MovieListProvider extends ChangeNotifier {
   final int _currentNowShowingPage = 1;
   final int _currentPopularPage = 1;
 
+  final int _maxNowShowingPage = 0;
+  int get maxNowShowingPage => _maxNowShowingPage;
+  final int _maxPopularPage = 0;
+  int get maxPopularPage => _maxPopularPage;
+
   late MovieListStrategy _currentStrategy;
 
   bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   Future<void> fetchMovies(MovieListTypeEnum type) async {
+    if (_isLoading) return;
+
     _isLoading = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
+
     final response = await _movieService.fetchShowingMovieList(
       queryParams: MovieListQueryParams(page: _currentMoviePage),
       type: _currentType,
     );
     if (response == null) return;
-
     _currentMovieList.addAll(response.results);
     _currentMovieList = _currentMovieList.toSet().toList();
     _currentMoviePage++;
@@ -81,8 +92,9 @@ class MovieListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void switchMovieListType() {
-    if (_isLoading == true) return;
+  Future<void> switchMovieListType() async {
+    if (_isLoading) return;
+
     switch (_currentType) {
       case MovieListTypeEnum.nowShowing:
         _currentType = MovieListTypeEnum.popular;
@@ -97,7 +109,7 @@ class MovieListProvider extends ChangeNotifier {
     _currentStrategy.switchMovieListType(this);
 
     if (_currentMovieList.isEmpty) {
-      fetchMovies(_currentType);
+      await fetchMovies(_currentType);
     }
 
     notifyListeners();

@@ -55,7 +55,10 @@ class MovieListProvider extends ChangeNotifier {
 
   late MovieListStrategy _currentStrategy;
 
-  Future fetchMovies(MovieListTypeEnum type) async {
+  bool _isLoading = false;
+
+  Future<void> fetchMovies(MovieListTypeEnum type) async {
+    _isLoading = true;
     final response = await _movieService.fetchShowingMovieList(
       queryParams: MovieListQueryParams(page: _currentMoviePage),
       type: _currentType,
@@ -65,6 +68,7 @@ class MovieListProvider extends ChangeNotifier {
     _currentMovieList.addAll(response.results);
     _currentMovieList = _currentMovieList.toSet().toList();
     _currentMoviePage++;
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -78,6 +82,7 @@ class MovieListProvider extends ChangeNotifier {
   }
 
   void switchMovieListType() {
+    if (_isLoading == true) return;
     switch (_currentType) {
       case MovieListTypeEnum.nowShowing:
         _currentType = MovieListTypeEnum.popular;

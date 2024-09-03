@@ -33,7 +33,6 @@ class _MovieListPageState extends State<MovieListPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-   
         title: const Text("FW-Movie"),
         centerTitle: true,
         actions: [
@@ -63,12 +62,12 @@ class _MovieListPageState extends State<MovieListPage> {
                       children: List.generate(
                         movieList.length + 1,
                         (index) {
-                          if (index < movieList.length) {
+                          if (index == movieList.length) {
+                            return const CircularProgressIndicator();
+                          } else {
                             return MovieListTile(
                               movie: movieList[index],
                             );
-                          } else {
-                            return const CircularProgressIndicator();
                           }
                         },
                       ),

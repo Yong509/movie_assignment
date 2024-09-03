@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:movie_assignment/data_models/movie/movie.dart';
 import 'package:movie_assignment/pages/movie_detail_page.dart';
 import 'package:movie_assignment/providers/movie_detail_provider.dart';
@@ -55,40 +53,18 @@ class MovieListTile extends StatelessWidget {
                   end: Alignment.centerRight,
                 ).createShader(bounds),
                 blendMode: BlendMode.dstIn,
-                child: CachedNetworkImage(
-                  cacheKey: movie.posterPath,
-                  imageUrl: imagePathUrl(
-                    movie.posterPath,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          bottomLeft: Radius.circular(25),
                   ),
-                  imageBuilder: (context, imageProvider) {
-                    return Container(
-                      width: 150,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          bottomLeft: Radius.circular(25),
-                        ),
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    );
-                  },
-                  placeholder: (context, url) {
-                    return Container(
-                      width: 150,
-                      height: 200,
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          bottomLeft: Radius.circular(25),
-                        ),
-                      ),
-                    );
-                  },
+                  child: Image.network(
+                    width: 150,
+                    height: 200,
+                    cacheWidth: 200,
+                    fit: BoxFit.fill,
+                    imagePathUrl(movie.posterPath),
+                  ),
                 ),
               ),
               Flexible(

@@ -60,6 +60,9 @@ class _MovieListPageState extends State<MovieListPage> {
             builder: (context, movieListProvider, child) {
               if (snapshot.connectionState == ConnectionState.done) {
                 final movieList = movieListProvider.currentMovieList;
+                final currentType = movieListProvider.currentType;
+                final currentPages = movieListProvider.currentPages[currentType] ?? 0;
+                final maxPages = movieListProvider.maxPages[currentType] ?? 0;
                 if (movieList.isNotEmpty) {
                   return ListView.builder(
                     key: ValueKey(movieListProvider.currentType),
@@ -67,13 +70,17 @@ class _MovieListPageState extends State<MovieListPage> {
                     itemCount: movieList.length + 1,
                     itemBuilder: (context, index) {
                       if (index == movieList.length) {
-                        return const SizedBox(
-                          height: 50.0,
-                          width: 50.0,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
+                        if (currentPages >= maxPages) {
+                          return const Center(child: Text("No more movies to load"));
+                        } else {
+                          return const SizedBox(
+                            height: 50.0,
+                            width: 50.0,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
                       } else {
                         return MovieListTile(
                           movie: movieList[index],

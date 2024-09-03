@@ -29,6 +29,13 @@ class MovieListProvider extends ChangeNotifier {
     MovieListTypeEnum.nowShowing: 1,
     MovieListTypeEnum.popular: 1,
   };
+  Map<MovieListTypeEnum, int> get currentPages => _currentPages;
+
+  final Map<MovieListTypeEnum, int> _maxPages = {
+    MovieListTypeEnum.nowShowing: 2,
+    MovieListTypeEnum.popular: 2,
+  };
+  Map<MovieListTypeEnum, int> get maxPages => _maxPages;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -39,8 +46,16 @@ class MovieListProvider extends ChangeNotifier {
       notifyListeners();
     });
 
+    if (_currentPages[type]! > _maxPages[type]!) {
+      _isLoading = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
+      return;
+    }
+
     final response = await _movieService.fetchShowingMovieList(
-      queryParams: MovieListQueryParams(page: _currentPages[type] ?? 1),
+      queryParams: MovieListQueryParams(page: _currentPages[type]!),
       type: _currentType,
     );
 
@@ -49,6 +64,7 @@ class MovieListProvider extends ChangeNotifier {
       currentList.addAll(response.results);
       _movieList[type] = currentList.toSet().toList();
       _currentPages[type] = (_currentPages[type] ?? 1) + 1;
+      _maxPages[type] = response.totalPages;
     }
 
     _isLoading = false;

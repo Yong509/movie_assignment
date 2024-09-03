@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_assignment/constants/movie_list_type_enum.dart';
 import 'package:movie_assignment/providers/movie_list_provider.dart';
 import 'package:movie_assignment/widgets/movie/movie_list_tile.dart';
 import 'package:provider/provider.dart';
@@ -20,11 +19,10 @@ class _MovieListPageState extends State<MovieListPage> {
     scrollController.addListener(fetchMoreMovie);
   }
 
-  void fetchMoreMovie() async {
+  Future<void> fetchMoreMovie() async {
+    final movieListProvider = context.read<MovieListProvider>();
     if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-      context.read<MovieListProvider>().fetchMovies(
-            MovieListTypeEnum.nowShowing,
-          );
+      await movieListProvider.fetchMovies(movieListProvider.currentType);
     }
   }
 
@@ -39,7 +37,14 @@ class _MovieListPageState extends State<MovieListPage> {
           Consumer<MovieListProvider>(
             builder: (context, movieListProvider, child) {
               return TextButton(
-                onPressed: movieListProvider.isLoading ? null : () => movieListProvider.switchMovieListType(),
+                onPressed: movieListProvider.isLoading
+                    ? null
+                    : () {
+                        movieListProvider.switchMovieListType();
+                        if (movieListProvider.currentMovieList.isEmpty) {
+                          movieListProvider.fetchMovies(movieListProvider.currentType);
+                        }
+                      },
                 child: Text(
                   movieListProvider.currentType.value,
                 ),
@@ -56,25 +61,28 @@ class _MovieListPageState extends State<MovieListPage> {
               if (snapshot.connectionState == ConnectionState.done) {
                 final movieList = movieListProvider.currentMovieList;
                 if (movieList.isNotEmpty) {
-                  return SingleChildScrollView(
+                  return ListView.builder(
+                    key: ValueKey(movieListProvider.currentType),
                     controller: scrollController,
-                    child: Column(
-                      children: List.generate(
-                        movieList.length + 1,
-                        (index) {
-                          if (index == movieList.length) {
-                            return const CircularProgressIndicator();
-                          } else {
-                            return MovieListTile(
-                              movie: movieList[index],
-                            );
-                          }
-                        },
-                      ),
-                    ),
+                    itemCount: movieList.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == movieList.length) {
+                        return const SizedBox(
+                          height: 50.0,
+                          width: 50.0,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      } else {
+                        return MovieListTile(
+                          movie: movieList[index],
+                        );
+                      }
+                    },
                   );
                 } else {
-                  return const SizedBox();
+                  return const Center(child: Text("empty"));
                 }
               }
               if (snapshot.connectionState == ConnectionState.waiting) {

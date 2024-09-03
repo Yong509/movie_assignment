@@ -5,32 +5,9 @@ import 'package:movie_assignment/data_models/movie/movie.dart';
 import 'package:movie_assignment/data_models/movie/movie_query_params.dart';
 import 'package:movie_assignment/services/movie_service.dart';
 
-abstract class MovieListStrategy {
-  void switchMovieListType(MovieListProvider provider);
-}
-
-class NowShowingStrategy implements MovieListStrategy {
-  @override
-  void switchMovieListType(MovieListProvider provider) {
-    provider._currentMovieList = provider._nowShowingMovieList;
-    provider._currentMoviePage = provider._currentNowShowingPage;
-  }
-}
-
-class PopularStrategy implements MovieListStrategy {
-  @override
-  void switchMovieListType(MovieListProvider provider) {
-    provider._currentMovieList = provider._popularMovieList;
-    provider._currentMoviePage = provider._currentPopularPage;
-  }
-}
-
 class MovieListProvider extends ChangeNotifier {
   MovieListProvider(this._movieService) {
     fetchMovieGenres();
-    _currentMovieList = _nowShowingMovieList;
-    _currentMoviePage = _currentNowShowingPage;
-    _currentStrategy = NowShowingStrategy();
   }
 
   final MovieService _movieService;
@@ -40,25 +17,18 @@ class MovieListProvider extends ChangeNotifier {
   List<Genre> _movieGenreList = [];
   List<Genre> get movieGenreList => _movieGenreList;
 
-  final List<Movie> _nowShowingMovieList = [];
-  List<Movie> get nowShowingMovieList => _nowShowingMovieList;
+  final Map<MovieListTypeEnum, List<Movie>> _movieList = {
+    MovieListTypeEnum.nowShowing: [],
+    MovieListTypeEnum.popular: [],
+  };
+  Map<MovieListTypeEnum, List<Movie>> get movieList => _movieList;
 
-  final List<Movie> _popularMovieList = [];
-  List<Movie> get popularMovieList => _popularMovieList;
+  List<Movie> get currentMovieList => _movieList[_currentType] ?? [];
 
-  List<Movie> _currentMovieList = [];
-  List<Movie> get currentMovieList => _currentMovieList;
-
-  int _currentMoviePage = 0;
-  final int _currentNowShowingPage = 1;
-  final int _currentPopularPage = 1;
-
-  final int _maxNowShowingPage = 0;
-  int get maxNowShowingPage => _maxNowShowingPage;
-  final int _maxPopularPage = 0;
-  int get maxPopularPage => _maxPopularPage;
-
-  late MovieListStrategy _currentStrategy;
+  final Map<MovieListTypeEnum, int> _currentPages = {
+    MovieListTypeEnum.nowShowing: 1,
+    MovieListTypeEnum.popular: 1,
+  };
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -70,13 +40,17 @@ class MovieListProvider extends ChangeNotifier {
     });
 
     final response = await _movieService.fetchShowingMovieList(
-      queryParams: MovieListQueryParams(page: _currentMoviePage),
+      queryParams: MovieListQueryParams(page: _currentPages[type] ?? 1),
       type: _currentType,
     );
-    if (response == null) return;
-    _currentMovieList.addAll(response.results);
-    _currentMovieList = _currentMovieList.toSet().toList();
-    _currentMoviePage++;
+
+    if (response != null) {
+      final currentList = _movieList[type] ?? [];
+      currentList.addAll(response.results);
+      _movieList[type] = currentList.toSet().toList();
+      _currentPages[type] = (_currentPages[type] ?? 1) + 1;
+    }
+
     _isLoading = false;
     notifyListeners();
   }
@@ -96,18 +70,11 @@ class MovieListProvider extends ChangeNotifier {
     switch (_currentType) {
       case MovieListTypeEnum.nowShowing:
         _currentType = MovieListTypeEnum.popular;
-        _currentStrategy = PopularStrategy();
+
         break;
       case MovieListTypeEnum.popular:
         _currentType = MovieListTypeEnum.nowShowing;
-        _currentStrategy = NowShowingStrategy();
         break;
-    }
-
-    _currentStrategy.switchMovieListType(this);
-
-    if (_currentMovieList.isEmpty) {
-      await fetchMovies(_currentType);
     }
 
     notifyListeners();

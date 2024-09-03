@@ -56,7 +56,8 @@ class _MovieBackdropCarouselState extends State<MovieBackdropCarousel> {
             },
           ),
         ),
-        Positioned(
+        if (widget.imageUrl.length > 1) ...[
+          Positioned(
           bottom: 20,
           left: 0,
           right: 0,
@@ -87,24 +88,7 @@ class _MovieBackdropCarouselState extends State<MovieBackdropCarousel> {
             ),
           ),
         ),
-        Positioned(
-          top: 30,
-          left: 10,
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(
-              width: 35,
-              height: 35,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.grey.shade400.withOpacity(0.5),
-              ),
-              child: const Center(
-                child: Icon(Icons.chevron_left),
-              ),
-            ),
-          ),
-        ),
+        ],
       ],
     );
   }

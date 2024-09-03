@@ -7,7 +7,6 @@ import 'package:movie_assignment/services/movie_service.dart';
 class MovieDetailProvider extends ChangeNotifier {
   MovieDetailProvider(this._movieService, this._currentMovie) {
     _currentMovie = _currentMovie;
-    fetchMovieDetail();
   }
 
   Movie _currentMovie;

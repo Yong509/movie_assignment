@@ -36,8 +36,11 @@ class _MovieAppState extends State<MovieApp> {
     httpClientService.setAccessToken(Env.accessToken);
     return MultiProvider(
       providers: providers,
-      child: const MaterialApp(
-        home: MovieListPage(),
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+        ),
+        home: const MovieListPage(),
       ),
     );
   }

@@ -32,6 +32,8 @@ class _MovieListPageState extends State<MovieListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+   
         title: const Text("FW-Movie"),
         centerTitle: true,
         actions: [

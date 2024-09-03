@@ -10,7 +10,7 @@ class MovieDetail {
   @JsonKey(name: "backdrop_path")
   final String backdropPath;
   @JsonKey(name: "belongs_to_collection")
-  final BelongsToCollection belongsToCollection;
+  final BelongsToCollection? belongsToCollection;
   @JsonKey(name: "budget")
   final int budget;
   @JsonKey(name: "genres")

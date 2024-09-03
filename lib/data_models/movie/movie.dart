@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'movie.g.dart';
 
 @JsonSerializable()
-class Movie {
+class Movie extends Equatable {
   @JsonKey(name: "adult")
   final bool adult;
 
@@ -68,4 +69,22 @@ class Movie {
   Map<String, dynamic> toJson() => _$MovieToJson(this);
 
   static String _intToString(dynamic value) => value.toString();
+
+  @override
+  List<Object?> get props => [
+        adult,
+        backdropPath,
+        genreIds,
+        id,
+        originalLanguage,
+        originalTitle,
+        overview,
+        popularity,
+        posterPath,
+        releaseDate,
+        title,
+        video,
+        voteAverage,
+        voteCount,
+      ];
 }

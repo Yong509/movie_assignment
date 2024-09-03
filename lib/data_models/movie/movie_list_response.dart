@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:movie_assignment/data_models/movie/movie.dart';
 
 part 'movie_list_response.g.dart';
 
 @JsonSerializable()
-class MovieListResponse {
+class MovieListResponse extends Equatable {
   @JsonKey(name: "dates")
   final Dates? dates;
   @JsonKey(name: "page")
@@ -27,10 +28,19 @@ class MovieListResponse {
   factory MovieListResponse.fromJson(Map<String, dynamic> json) => _$MovieListResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$MovieListResponseToJson(this);
+
+  @override
+  List<Object?> get props => [
+        dates,
+        page,
+        results,
+        totalPages,
+        totalResults,
+      ];
 }
 
 @JsonSerializable()
-class Dates {
+class Dates extends Equatable {
   @JsonKey(name: "maximum")
   final DateTime maximum;
   @JsonKey(name: "minimum")
@@ -44,4 +54,10 @@ class Dates {
   factory Dates.fromJson(Map<String, dynamic> json) => _$DatesFromJson(json);
 
   Map<String, dynamic> toJson() => _$DatesToJson(this);
+
+  @override
+  List<Object?> get props => [
+        maximum,
+        minimum,
+      ];
 }

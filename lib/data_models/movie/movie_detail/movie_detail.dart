@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:movie_assignment/data_models/movie/genre/genre.dart';
 
 part 'movie_detail.g.dart';
 
 @JsonSerializable()
-class MovieDetail {
+class MovieDetail extends Equatable {
   @JsonKey(name: "adult")
   final bool adult;
   @JsonKey(name: "backdrop_path")
@@ -58,7 +59,7 @@ class MovieDetail {
   @JsonKey(name: "vote_count")
   final int voteCount;
 
-  MovieDetail({
+  const MovieDetail({
     required this.adult,
     required this.backdropPath,
     required this.belongsToCollection,
@@ -92,10 +93,40 @@ class MovieDetail {
   Map<String, dynamic> toJson() => _$MovieDetailToJson(this);
 
   static String _intToString(int value) => value.toString();
+
+  @override
+  List<Object?> get props => [
+        adult,
+        backdropPath,
+        belongsToCollection,
+        budget,
+        genres,
+        homepage,
+        id,
+        imdbId,
+        originCountry,
+        originalLanguage,
+        originalTitle,
+        overview,
+        popularity,
+        posterPath,
+        productionCompanies,
+        productionCountries,
+        releaseDate,
+        revenue,
+        runtime,
+        spokenLanguages,
+        status,
+        tagline,
+        title,
+        video,
+        voteAverage,
+        voteCount,
+      ];
 }
 
 @JsonSerializable()
-class BelongsToCollection {
+class BelongsToCollection extends Equatable {
   @JsonKey(name: "id", fromJson: _intToString)
   final String id;
   @JsonKey(name: "name")
@@ -105,7 +136,7 @@ class BelongsToCollection {
   @JsonKey(name: "backdrop_path")
   final String backdropPath;
 
-  BelongsToCollection({
+  const BelongsToCollection({
     required this.id,
     required this.name,
     required this.posterPath,
@@ -117,10 +148,18 @@ class BelongsToCollection {
   Map<String, dynamic> toJson() => _$BelongsToCollectionToJson(this);
 
   static String _intToString(int value) => value.toString();
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        posterPath,
+        backdropPath,
+      ];
 }
 
 @JsonSerializable()
-class ProductionCompany {
+class ProductionCompany extends Equatable {
   @JsonKey(name: "id", fromJson: _intToString)
   final String id;
   @JsonKey(name: "logo_path")
@@ -130,7 +169,7 @@ class ProductionCompany {
   @JsonKey(name: "origin_country")
   final String originCountry;
 
-  ProductionCompany({
+  const ProductionCompany({
     required this.id,
     required this.logoPath,
     required this.name,
@@ -142,16 +181,24 @@ class ProductionCompany {
   Map<String, dynamic> toJson() => _$ProductionCompanyToJson(this);
 
   static String _intToString(int value) => value.toString();
+
+  @override
+  List<Object?> get props => [
+        id,
+        logoPath,
+        name,
+        originCountry,
+      ];
 }
 
 @JsonSerializable()
-class ProductionCountry {
+class ProductionCountry extends Equatable {
   @JsonKey(name: "iso_3166_1")
   final String iso31661;
   @JsonKey(name: "name")
   final String name;
 
-  ProductionCountry({
+  const ProductionCountry({
     required this.iso31661,
     required this.name,
   });
@@ -159,10 +206,16 @@ class ProductionCountry {
   factory ProductionCountry.fromJson(Map<String, dynamic> json) => _$ProductionCountryFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductionCountryToJson(this);
+
+  @override
+  List<Object?> get props => [
+        iso31661,
+        name,
+      ];
 }
 
 @JsonSerializable()
-class SpokenLanguage {
+class SpokenLanguage extends Equatable {
   @JsonKey(name: "english_name")
   final String englishName;
   @JsonKey(name: "iso_639_1")
@@ -170,7 +223,7 @@ class SpokenLanguage {
   @JsonKey(name: "name")
   final String name;
 
-  SpokenLanguage({
+  const SpokenLanguage({
     required this.englishName,
     required this.iso6391,
     required this.name,
@@ -179,4 +232,11 @@ class SpokenLanguage {
   factory SpokenLanguage.fromJson(Map<String, dynamic> json) => _$SpokenLanguageFromJson(json);
 
   Map<String, dynamic> toJson() => _$SpokenLanguageToJson(this);
+
+  @override
+  List<Object?> get props => [
+        englishName,
+        iso6391,
+        name,
+      ];
 }

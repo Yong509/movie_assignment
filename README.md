@@ -33,10 +33,10 @@ cached_network_image is used to efficiently load and cache images from the inter
 
 
 ## Before run and debug the project 
-1. Add .env file 
+1. Add .env file following .env.example
 2. please run the code generator to generate the missing .g.dart generated dart files first.
 
 ```
 flutter pub get
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 ```

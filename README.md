@@ -5,7 +5,7 @@
 Provider because the scale and complexity of the app are not large scale and not complex. Provider is a straightforward way to manage state which is more accessible for projects where rapid development is a priority.
 
 Why not BLoC ?
-From the requirements, BLoC is a pattern that is designed for separate app into 3 layers Presentation, Business Logic and Data which require more principles than Provider and and is suitable for complex state and business logic.
+From the requirements, BLoC is a pattern that is designed for separate app into 3 layers Presentation, Business Logic and Data which require more principles than Provider and it is suitable for complex state and business logic.
 
 Why not Riverpod ?
 Riverpod is the upgraded version of Provider. Riverpod offering more advanced and flexible state management than Provider. The requirement is a straightforward state management which is Provider and Riverpod can do the same thing but the Provider is simpler.

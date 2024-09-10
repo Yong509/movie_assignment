@@ -4,6 +4,7 @@ import 'package:movie_assignment/pages/movie_detail_page.dart';
 import 'package:movie_assignment/providers/movie_detail_provider.dart';
 import 'package:movie_assignment/services/movie_service.dart';
 import 'package:movie_assignment/utils/image_path_url.dart';
+import 'package:movie_assignment/widgets/custom_cache_network_image.dart';
 import 'package:movie_assignment/widgets/movie/genre_chip.dart';
 import 'package:movie_assignment/widgets/rating_stars.dart';
 import 'package:provider/provider.dart';
@@ -55,15 +56,11 @@ class MovieListTile extends StatelessWidget {
                 blendMode: BlendMode.dstIn,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          bottomLeft: Radius.circular(25),
+                    topLeft: Radius.circular(25),
+                    bottomLeft: Radius.circular(25),
                   ),
-                  child: Image.network(
-                    width: 150,
-                    height: 200,
-                    cacheWidth: 200,
-                    fit: BoxFit.fill,
-                    imagePathUrl(movie.posterPath),
+                  child: CustomCacheNetworkImage(
+                    url: movie.posterPath,
                   ),
                 ),
               ),
